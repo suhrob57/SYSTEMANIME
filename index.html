@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Sayti</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .anime-card { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+        .anime-card h3 { margin: 0; }
+        .anime-card p { margin: 5px 0; }
+        .like-btn, .comment-btn { margin-top: 10px; cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; }
+        .comment-section { margin-top: 10px; }
+        .comment-box { margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Anime Sayti</h1>
+    <div id="anime-container"></div>
+
+    <script>
+        // Anime ma'lumotlarini olish
+        fetch('/get_anime')
+        .then(response => response.json())
+        .then(data => {
+            const animeContainer = document.getElementById('anime-container');
+            data.forEach(anime => {
+                const animeCard = document.createElement('div');
+                animeCard.classList.add('anime-card');
+                animeCard.innerHTML = `
+                    <h3>${anime.title}</h3>
+                    <p>Qism: ${anime.part}</p>
+                    <p>Likes: <span id="like-count-${anime.title}">${anime.likes}</span></p>
+                    <button class="like-btn" onclick="likeAnime('${anime.title}')">Like</button>
+                    <div class="comment-section">
+                        <textarea id="comment-box-${anime.title}" placeholder="Izoh qoldiring..."></textarea>
+                        <button class="comment-btn" onclick="addComment('${anime.title}')">Izoh qoldirish</button>
+                        <ul id="comments-list-${anime.title}">
+                            ${anime.comments.map(comment => `<li>${comment}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                animeContainer.appendChild(animeCard);
+            });
+        });
+
+        // Like funksiyasi
+        function likeAnime(title) {
+            const likeCount = document.getElementById(`like-count-${title}`);
+            let currentLikes = parseInt(likeCount.innerText);
+            likeCount.innerText = currentLikes + 1;
+
+            // Firebasega like qo'shish uchun backend so'rovi
+            fetch('/like_anime', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: title, action: 'like' }),
+            });
+        }
+
+        // Izoh qo'shish funksiyasi
+        function addComment(title) {
+            const commentBox = document.getElementById(`comment-box-${title}`);
+            const commentText = commentBox.value.trim();
+            if (commentText) {
+                const commentsList = document.getElementById(`comments-list-${title}`);
+                const newComment = document.createElement('li');
+                newComment.textContent = commentText;
+                commentsList.appendChild(newComment);
+
+                // Firebasega izoh qo'shish
+                fetch('/comment_anime', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: title, comment: commentText }),
+                });
+
+                // Izoh maydonini tozalash
+                commentBox.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
