@@ -1,7 +1,7 @@
-// pages/index.js
 import { useEffect, useState } from 'react';
 import { db } from '../lib/firebase'; // Firebase-dan import qilish
 import { collection, getDocs, updateDoc, doc, increment } from 'firebase/firestore'; // updateDoc va increment import qilish
+import styles from './styles/Home.module.css'; // CSS faylini import qilish
 
 export default function Home() {
   // Animelar ro'yxatini saqlash uchun state
@@ -36,21 +36,29 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>Anime ro'yxati</h1>
-      <div>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Anime ro'yxati</h1>
+      <div className={styles.animeList}>
         {animes.length === 0 ? (
-          <p>Animelar yuklanmoqda...</p>
+          <p className={styles.loading}>Animelar yuklanmoqda...</p>
         ) : (
           <ul>
             {animes.map((anime) => (
-              <li key={anime.id}>
+              <li key={anime.id} className={styles.animeItem}>
                 <h2>{anime.name}</h2>
                 <p>{anime.description}</p>
                 <p>Qism: {anime.parts}</p>
                 <p>Like: {anime.likes || 0}</p> {/* Like soni */}
-                <button onClick={() => handleLike(anime.id)}>Like</button>
-                <button onClick={() => handleComment(anime.id)}>Comment</button>
+                <button 
+                  className={styles.button} 
+                  onClick={() => handleLike(anime.id)}>
+                  Like
+                </button>
+                <button 
+                  className={styles.button} 
+                  onClick={() => handleComment(anime.id)}>
+                  Comment
+                </button>
               </li>
             ))}
           </ul>
