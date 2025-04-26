@@ -1,1 +1,110 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212; /* Qora fon */
+  color: white;
+  line-height: 1.6;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.telegram-btn {
+  background-color: #1e90ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.telegram-btn:hover {
+  background-color: #0d74e6;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.anime-list {
+  list-style-type: none;
+}
+
+.anime-item {
+  background-color: #333;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+}
+
+.anime-item h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.anime-item p {
+  margin-bottom: 10px;
+}
+
+.like-comment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.comments {
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .anime-item {
+    padding: 10px;
+  }
+
+  .telegram-btn {
+    font-size: 0.9rem;
+  }
+}
